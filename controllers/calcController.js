@@ -1,22 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const calcController = require('../controllers/calcController');
+// 1️⃣ EMI CONTROLLER
+exports.emi = (req, res) => {
+    const { principal, rate, months, years } = req.query;
 
-// Test Route
-router.get('/test', (req, res) => {
-    res.json({
-        status: "success",
-        message: "API is working fine!"
-    });
-});
-
-// Main API routes
-router.get('/emi', calcController.emi);
-router.get('/gst', calcController.gst);
-router.get('/pf', calcController.pf);
-router.get('/salary', calcController.salary);
-
-module.exports = router;    const annualRate = parseFloat(rate);
+    const principalAmt = parseFloat(principal);
+    const annualRate = parseFloat(rate);
 
     let tenureMonths = 0;
 
@@ -40,7 +27,6 @@ module.exports = router;    const annualRate = parseFloat(rate);
     res.json({ status: "success", data: result });
 };
 
-
 // 2️⃣ GST CONTROLLER
 exports.gst = (req, res) => {
     const { amount, rate, isInclusive } = req.query;
@@ -56,7 +42,6 @@ exports.gst = (req, res) => {
 
     res.json({ status: "success", data: result });
 };
-
 
 // 3️⃣ PF CONTROLLER
 exports.pf = (req, res) => {
@@ -74,8 +59,7 @@ exports.pf = (req, res) => {
     res.json({ status: "success", data: result });
 };
 
-
-// 4️⃣ SALARY TO HOURLY CONTROLLER
+// 4️⃣ SALARY CONTROLLER
 exports.salary = (req, res) => {
     const { annual, hours } = req.query;
 
