@@ -1,76 +1,95 @@
-// 1️⃣ EMI CONTROLLER
+// -------------------------------------------
+// CONTROLLER FILE — Handles All Calculations
+// -------------------------------------------
+
+// EMI Calculator
 exports.emi = (req, res) => {
-    const { principal, rate, months, years } = req.query;
+    let { principal, rate, months } = req.query;
 
-    const principalAmt = parseFloat(principal);
-    const annualRate = parseFloat(rate);
+    principal = parseFloat(principal);
+    rate = parseFloat(rate);
+    months = parseInt(months);
 
-    let tenureMonths = 0;
-
-    if (months) {
-        tenureMonths = parseFloat(months);
-    } else if (years) {
-        tenureMonths = parseFloat(years) * 12;
-    } else {
-        return res.status(400).json({
-            status: "error",
-            message: "Please provide months or years"
-        });
+    if (!principal || !rate || !months) {
+        return res.json({ error: "Missing inputs" });
     }
 
-    const result = calculateEMI(principalAmt, annualRate, tenureMonths);
+    const monthlyRate = rate / (12 * 100);
+    const emi =
+        (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+        (Math.pow(1 + monthlyRate, months) - 1);
 
-    if (result.error) {
-        return res.status(400).json({ status: "error", message: result.error });
-    }
-
-    res.json({ status: "success", data: result });
+    res.json({
+        principal,
+        rate,
+        months,
+        emi: emi.toFixed(2)
+    });
 };
 
-// 2️⃣ GST CONTROLLER
+// GST Calculator
 exports.gst = (req, res) => {
-    const { amount, rate, isInclusive } = req.query;
+    let { amount, gst } = req.query;
 
-    const amountVal = parseFloat(amount);
-    const rateVal = parseFloat(rate);
+    amount = parseFloat(amount);
+    gst = parseFloat(gst);
 
-    const result = calculateGST(amountVal, rateVal, isInclusive);
-
-    if (result.error) {
-        return res.status(400).json({ status: "error", message: result.error });
+    if (!amount || !gst) {
+        return res.json({ error: "Missing inputs" });
     }
 
-    res.json({ status: "success", data: result });
+    const gstAmount = (amount * gst) / 100;
+    const total = amount + gstAmount;
+
+    res.json({
+        amount,
+        gst,
+        gstAmount: gstAmount.toFixed(2),
+        total: total.toFixed(2)
+    });
 };
 
-// 3️⃣ PF CONTROLLER
+// PF Calculator
 exports.pf = (req, res) => {
-    const { basic, da } = req.query;
+    let { basic } = req.query;
+    basic = parseFloat(basic);
 
-    const basicVal = parseFloat(basic);
-    const daVal = parseFloat(da || 0);
-
-    const result = calculatePF(basicVal, daVal);
-
-    if (result.error) {
-        return res.status(400).json({ status: "error", message: result.error });
+    if (!basic) {
+        return res.json({ error: "Missing input" });
     }
 
-    res.json({ status: "success", data: result });
+    const employeePF = (basic * 12) / 100;
+    const employerPF = (basic * 12) / 100;
+    const totalPF = employeePF + employerPF;
+
+    res.json({
+        basic,
+        employeePF: employeePF.toFixed(2),
+        employerPF: employerPF.toFixed(2),
+        totalPF: totalPF.toFixed(2)
+    });
 };
 
-// 4️⃣ SALARY CONTROLLER
+// Salary Calculator
 exports.salary = (req, res) => {
-    const { annual, hours } = req.query;
+    let { basic, hra, da, bonus } = req.query;
 
-    const annualVal = parseFloat(annual);
-    const hoursVal = parseFloat(hours);
+    basic = parseFloat(basic);
+    hra = parseFloat(hra);
+    da = parseFloat(da);
+    bonus = parseFloat(bonus);
 
-    const result = calculateSalaryToHourly(annualVal, hoursVal);
-
-    if (result.error) {
-        return res.status(400).json({ status: "error", message: result.error });
+    if (!basic || !hra || !da || !bonus) {
+        return res.json({ error: "Missing inputs" });
     }
 
-    res.json({ status: "success", data: result });
+    const gross = basic + hra + da + bonus;
+
+    res.json({
+        basic,
+        hra,
+        da,
+        bonus,
+        grossSalary: gross.toFixed(2)
+    });
 };
