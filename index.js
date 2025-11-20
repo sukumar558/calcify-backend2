@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const apiRoutes = require('./routes/apiRoutes');
+const apiroutes = require('./routes/apiroutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ app.use(cors()); // Allows frontend running on a different port/domain to access
 app.use(express.json());
 
 // API Routes
-app.use('/api', apiRoutes);
+app.use('/api', apiroutes);
 
 // Simple health check route
 app.get('/', (req, res) => {
