@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const calccontroller = require('../controllers/calccontroller');
+const calcController = require('../controllers/calcController');
 
-// Test Route (for checking API is working)
+// Test Route
 router.get('/test', (req, res) => {
     res.json({
         status: "success",
@@ -10,10 +10,10 @@ router.get('/test', (req, res) => {
     });
 });
 
-// Existing API routes
-router.get('/emi', calccontroller.emi);
-router.get('/gst', calccontroller.gst);
-router.get('/pf', calcvontroller.pf);
-router.get('/salary', calccontroller.salary);
+// Main API routes
+router.get('/emi', calcController.emi);
+router.get('/gst', calcController.gst);
+router.get('/pf', calcController.pf);
+router.get('/salary', calcController.salary);
 
 module.exports = router;
