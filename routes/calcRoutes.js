@@ -10,7 +10,7 @@ router.get('/test', (req, res) => {
     });
 });
 
-// Main API routes
+// Main Routes
 router.get('/emi', calcController.emi);
 router.get('/gst', calcController.gst);
 router.get('/pf', calcController.pf);
