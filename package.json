@@ -1,16 +1,21 @@
 {
-  "name": "calcify-backend",
+  "name": "calcify-pro-backend",
   "version": "1.0.0",
-  "lockfileVersion": 2,
-  "requires": true,
-  "packages": {
-    "": {
-      "name": "calcify-backend",
-      "version": "1.0.0",
-      "dependencies": {
-        "express": "^4.18.2",
-        "cors": "^2.8.5"
-      }
-    }
+  "description": "Backend APIs for Calcify Pro",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "calculator"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
   }
 }
