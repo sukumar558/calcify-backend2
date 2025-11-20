@@ -1,28 +1,29 @@
+// -------------------------------------------
+// CALCIFY PRO — MAIN SERVER FILE (index.js)
+// -------------------------------------------
+
 const express = require('express');
 const cors = require('cors');
-const apiroutes = require('./routes/apiroutes');
+const calcRoutes = require('./routes/calcRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors()); // Allows frontend running on a different port/domain to access the API
+// Middlewares
+app.use(cors());
 app.use(express.json());
 
-// API Routes
-app.use('/api', apiroutes);
-
-// Simple health check route
+// Default Home Route
 app.get('/', (req, res) => {
-    res.send(`Calcify Pro Backend is running on port ${PORT}!`);
+    res.send("Calcify Pro Backend is running successfully! 🚀");
 });
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ status: 'error', message: 'Something broke!' });
-});
+// API Routes
+app.use('/', calcRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${PORT}`);
+// PORT setting (IMPORTANT FOR RENDER)
+const PORT = process.env.PORT || 10000;
+
+// Start Server
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Calcify Pro Backend is running on port ${PORT}`);
 });
