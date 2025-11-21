@@ -1,28 +1,23 @@
-// -------------------------------------------
-// CALCIFY PRO – MAIN SERVER FILE
-// -------------------------------------------
-
+// index.js
 const express = require('express');
-const cors = require('cors');
-const calcRoutes = require('./routes/calcRoutes');
-
 const app = express();
+const cors = require('cors');
+const routes = require('./routes/apiroutes');
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Home Route
+// Mount APIs under / (or change to /api if you want)
+app.use('/', routes);
+
+// simple root
 app.get('/', (req, res) => {
-    res.send("Calcify Pro Backend is Live 🚀");
+    res.send("Calcify Backend — APIs are running. Try /test");
 });
 
-// Attach ALL API Routes with /api prefix
-app.use('/api', calcRoutes);
-
-// IMPORTANT FOR RENDER HOSTING
-const PORT = process.env.PORT || 10000;
-
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Calcify Pro Backend running on port ${PORT}`);
+// port
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
